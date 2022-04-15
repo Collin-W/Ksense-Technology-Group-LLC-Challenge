@@ -36,7 +36,7 @@ const testObj = [
   }
 ];
 
-function fetchJSON(x) {
+function fetchJSON() {
     fetch('https://jsonplaceholder.typicode.com/todos/1')
     .then(response => response.json())
     .then(response => {
@@ -44,12 +44,42 @@ function fetchJSON(x) {
 
         renderUserTable()
     })
+}
+
 
     
-function renderUserTable(){
+function renderUserTable(users){
+    for (var i = 0; i < 15 && users.length; i++) {
+
+        let table, row, cell;
+        
+        table = document.createElement('table');
+        row = table.insertRow([i]); 
+        cell = row.insertCell([i]);
+        cell = document.createElement('a');
+        cell.innerHTML = $(this); //$(this).attr('value');
+        cell.setAttribute("class", "userCell");
+        cell.setAttribute("value", this);
+        document.getElementById("table-section").appendChild(table);
+    }
+}
+
+
+
+function fetchUserPosts(x){
+    fetch('https://jsonplaceholder.typicode.com/todos/1')
+    .then(response => response.json())
+    .then(response => {
+        console.log('hello')
 
     }
+}
 
-function fetchUserPosts() {
+$('call-api').onClick(function (){
+    fetchJSON()
+})
 
-    }
+$('.userCell').click(function () {
+    var user = $(this).attr('value');
+    fetchUserPosts(user);
+}  
