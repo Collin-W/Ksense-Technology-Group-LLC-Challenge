@@ -41,19 +41,23 @@ function fetchJSON() {
     .then((response) => {
       let userName = response.name;
       let id = response.id;
+      console.log(response);
+      console.log("entered fetch jSON");
       renderUserTable(userName, id);
     });
 }
 
 function renderUserTable(userName, id) {
-  for (var i = 0; i < 15 && id.length; i++) {
+  let arrId = [id];
+  for (var i = 0; i < 15 && arrId.length; i++) {
     let table, row, cell;
-
+    console.log("entered fetch user function");
     table = document.createElement("table");
+    table.setAttribute("id", "userTable");
     row = table.insertRow([i]);
     cell = row.insertCell([i]);
     cell = document.createElement("a");
-    cell.innerHTML = userName; //$(this).attr('value');
+    cell.textContent = userName; //$(this).attr('value');  //innerHTML:
     cell.setAttribute("class", "userCell");
     cell.setAttribute("value", id);
     document.getElementById("table-section").appendChild(table);
@@ -65,11 +69,29 @@ function fetchUserPosts(userId) {
   fetch("https://jsonplaceholder.typicode.com/posts/" + id)
     .then((response) => response.json())
     .then((response) => {
-      console.log("hello");
+      let postTitle = response.title;
+      let postBody = response.body;
+      renderUserPosts(postTitle, postBody);
     });
 }
 
-$("call-api").onClick(function () {
+function renderUserPosts(postTitle, postBody) {
+  $("#userTable").hide();
+  for (var i = 0; i < 10 && postTitle.length; i++) {
+    let title, body, post;
+
+    title = document.createElement("h3");
+    body = document.createElement("p");
+    post = document.createElement("div");
+    title.textContent = postTitle;
+    body.textContent = postBody;
+    post.appendChild(title);
+    post.appendChild(body);
+    document.getElementById("post-section").appendChild(post);
+  }
+}
+
+$("#call-api").click(function () {
   fetchJSON();
 });
 
