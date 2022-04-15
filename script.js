@@ -3,63 +3,37 @@
 //that were created by that 'USER'. You have full freedom in how you accomplish
 //the above objectives. You also have full freedom as far as design is concerned
 
-//user obj mapped to a
-//table of user links
-//a link will get the vlaue of user and make an api call for posts
-//posts are rendered to dom
-
-//start with a test api
-
-const testObj = [
-  {
-    user: "Collin",
-    posts: [
-      {
-        post: "Hello Mike",
-      },
-      {
-        post: "I like tea.",
-      },
-    ],
-  },
-  {
-    user: "Mike",
-    posts: [
-      {
-        post: "Hello Collin",
-      },
-      {
-        post: "I like coffee.",
-      },
-    ],
-  },
-];
-
-function fetchJSON() {
+function fetchUsers() {
   fetch("https://jsonplaceholder.typicode.com/users")
     .then((response) => response.json())
     .then((response) => {
-      let userName = response.name;
-      let id = response.id;
-      console.log(response);
-      console.log("entered fetch jSON");
-      renderUserTable(userName, id);
+      for (var i = 0; i < response.length; i++) {
+        let userName = response[i].name;
+        let id = response[i].id;
+        renderUserTable(userName, id);
+      }
     });
 }
 
 function renderUserTable(userName, id) {
+  let table, row;
+  
+  let arrUserName = [userName];
   let arrId = [id];
+  table = document.createElement("table");
+  table.setAttribute("id", "userTable");
+  row = table.insertRow("Users");
+
   for (var i = 0; i < 15 && arrId.length; i++) {
-    let table, row, cell;
-    console.log("entered fetch user function");
-    table = document.createElement("table");
-    table.setAttribute("id", "userTable");
-    row = table.insertRow([i]);
+    let cell, p;
+
     cell = row.insertCell([i]);
-    cell = document.createElement("a");
-    cell.textContent = userName; //$(this).attr('value');  //innerHTML:
+    p = document.createElement("button");
+    p.textContent = arrUserName[i]; 
+    cell.appendChild(p);
+    row.appendChild(cell);
     cell.setAttribute("class", "userCell");
-    cell.setAttribute("value", id);
+    cell.setAttribute("value", arrId[i]);
     document.getElementById("table-section").appendChild(table);
   }
 }
@@ -92,10 +66,11 @@ function renderUserPosts(postTitle, postBody) {
 }
 
 $("#call-api").click(function () {
-  fetchJSON();
+  fetchUsers();
 });
 
 $(".userCell").click(function () {
   var userId = $(this).attr("value");
+  console.log('hello')
   fetchUserPosts(userId);
 });
